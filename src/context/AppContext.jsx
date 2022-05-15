@@ -27,21 +27,20 @@ export const TicTacProvider = ({ children }) => {
     checkTie(chooseItem);
   };
 
-  const checkWin = (chooseItem) => {
-    Results.forEach((val, i) => {
+    const checkWin = (chooseItem) => {
+    for (let i = 0; i < Results.length; i++) {
       const [a, b, c] = Results[i];
       if (
         chooseItem[a] &&
-        chooseItem[b] === chooseItem[c] &&
+        chooseItem[a] === chooseItem[b] &&
         chooseItem[a] === chooseItem[c]
       ) {
-        //* console.log("win");
         setResult({ winner: true, text: `${chooseItem[a]} is Winner` });
-        return chooseItem[a];
+        break;
       }
-      return;
-    });
+    }
   };
+
 
   const checkTie = (chooseItem) => {
     const res = chooseItem.every((value) => value !== null);
