@@ -9,8 +9,11 @@ export const useTicTac = () => {
 
 export const TicTacProvider = ({ children }) => {
   const [items, setItems] = useState(Array(9).fill(null));
-  const [player, setPlayer] = useState(true);
   const [result, setResult] = useState({ winner: false, text: "" });
+  const [player, setPlayer] = useState(() => {
+    const randomNum = Math.floor(Math.random() * 2);
+    randomNum === 0 ? true : false;
+  });
 
   const handleClick = (index) => {
     const chooseItem = items.slice();
@@ -21,33 +24,27 @@ export const TicTacProvider = ({ children }) => {
       setPlayer(!player);
     } else {
       alert("This box cannot be checked.");
-      return;
     }
     checkWin(chooseItem);
-    checkTie(chooseItem);
   };
 
-    const checkWin = (chooseItem) => {
-    for (let i = 0; i < Results.length; i++) {
+  const checkWin = (chooseItem) => {
+    Results.forEach((_, i) => {
       const [a, b, c] = Results[i];
+
       if (
         chooseItem[a] &&
         chooseItem[a] === chooseItem[b] &&
         chooseItem[a] === chooseItem[c]
       ) {
         setResult({ winner: true, text: `${chooseItem[a]} is Winner` });
-        break;
+        return chooseItem[a];
+      } else if (chooseItem.every((item) => item !== null)) {
+        setResult({ winner: true, text: "No player wins" });
+      } else {
+        return null;
       }
-    }
-  };
-
-
-  const checkTie = (chooseItem) => {
-    const res = chooseItem.every((value) => value !== null);
-    if (res) {
-      setResult({ winner: true, text: "No player wins" });
-      return;
-    }
+    });
   };
 
   const reStart = () => {
